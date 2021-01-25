@@ -1,0 +1,26 @@
+﻿<Window x:Class="Hyperspec_VideoProcessing.PathConfigBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hyperspec_VideoProcessing"
+        mc:Ignorable="d"
+        Title="Path Configuration" SizeToContent="WidthAndHeight" Background="#FF171717"
+        WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Margin="10">
+            <Label DockPanel.Dock="Left" Content="Post Processing Path: " Foreground="White" VerticalContentAlignment="Center" FontWeight="Bold" FontStyle="Italic"/>
+            <Button Name="SearchDirectory" DockPanel.Dock="Right" Content="&#57818;" FontFamily="Segoe UI Symbol" Width="30" Height="30" Click="SearchDirectory_Click"/> <!-- Could also use a magnifying/search glass icon instead "&xE11A;" -->
+            <TextBox Name="PathText" VerticalContentAlignment="Center" MinWidth="300" Width="350" Background="#FF0033A0" Foreground="#FF9BD3DD" BorderBrush="#FF005EB8" TextChanged="PathText_TextChanged"/>
+        </DockPanel>
+
+        <Button Name="SetPath" Grid.Row="1" Content="Set Paths" Margin="10,5,10,10" Padding="5" Click="SetPath_Click"
+                FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+    </Grid>
+</Window>

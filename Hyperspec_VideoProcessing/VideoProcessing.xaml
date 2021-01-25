@@ -1,0 +1,172 @@
+﻿<Window x:Class="Hyperspec_VideoProcessing.VideoProcessing"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hyperspec_VideoProcessing"
+        mc:Ignorable="d"
+        Title="Video-Still Processing" Height="650" Width="1200" Background="#88002855"
+        WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+
+    <Grid Name="MainContainer">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Video Playback section -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Placeholder for video -->
+            <Rectangle Grid.Row="0" Fill="Black"/>
+            <MediaElement Grid.Row="0" Name="VideoProcessPlayer" LoadedBehavior="Manual" UnloadedBehavior="Manual" ScrubbingEnabled="True"
+                        MediaOpened="VideoProcessPlayer_MediaOpened" MediaEnded="VideoProcessPlayer_MediaEnded"/>
+
+            <Slider Grid.Row="1" Name="VideoTimeSlider" Margin="15,5" Thumb.DragStarted="VideoTimeSlider_DragStarted" Thumb.DragCompleted="VideoTimeSlider_DragCompleted" IsMoveToPointEnabled="False"/>
+
+            <StackPanel Grid.Row="2" Margin="15,5" Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Name="VideoTimeDisplay" Content="00:00.00 / 00:00.00" Foreground="White"/>
+                <Button Name="PlayButton" Content="&#9205;" FontFamily="Segoe UI Symbol" FontSize="15" Width="25" Height="25" Margin="5,0" Click="PlayButton_Click"/>
+                <Button Name="PauseButton" Content="&#9208;" FontFamily="Segoe UI Symbol" FontSize="15" Width="25" Height="25" Margin="5,0" Click="PauseButton_Click"/>
+                <Button Name="StopButton" Content="&#9209;" FontFamily="Segoe UI Symbol" FontSize="15" Width="25" Height="25" Margin="5,0" Click="StopButton_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Start/Stop Still Times -->
+        <Grid Grid.Column="1" Margin="10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Guide Color Legend -->
+            <Grid Grid.Row="0" Margin="5,5,5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <DockPanel Grid.Column="0" HorizontalAlignment="Center">
+                    <Rectangle Height="15" Width="15" Fill="#FF19B10D" DockPanel.Dock="Left"/>
+                    <Label Content="- Intended Area" HorizontalContentAlignment="Left" Foreground="White"/>
+                </DockPanel>
+                <DockPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <Rectangle Height="15" Width="15" Fill="#FFFFB81C" DockPanel.Dock="Left"/>
+                    <Label Content="- Try to Avoid" HorizontalContentAlignment="Left" Foreground="White"/>
+                </DockPanel>
+                <DockPanel Grid.Column="2" HorizontalAlignment="Center">
+                    <Rectangle Height="15" Width="15" Fill="#FFDA5C59" DockPanel.Dock="Left"/>
+                    <Label Content="- Avoid" HorizontalContentAlignment="Left" Foreground="White"/>
+                </DockPanel>
+            </Grid>
+
+            <!-- 0 to +22.5 -->
+            <Border Grid.Row="1" Margin="0,10" BorderBrush="#FF3C3C3C" BorderThickness="2">
+                <Grid Background="#DD002855">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0">
+                        <Label DockPanel.Dock="Left" MinWidth="120" Content="0° &#58039; +22.5°" FontFamily="Segoe UI Symbol" VerticalContentAlignment="Top" Foreground="White" FontSize="13" FontWeight="Bold" FontStyle="Italic"/>
+                        <Image Source="/Video Guide Images/Guide_0ToPos225.png" Margin="0,5"/>
+                    </DockPanel>
+
+                    <DockPanel Grid.Row="1" Margin="5,0,0,0" HorizontalAlignment="Stretch">
+                        <Button Name="SetStart_0ToPos225" Content="&#58012;" FontFamily="Segoe UI Symbol" Height="25" Width="25" Click="SetStart_0ToPos225_Click"/>
+                        <Label Content="Start - " Margin="10,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <Label Name="Start_0ToPos225" Content="--:--.--" VerticalContentAlignment="Center" Foreground="White"/>
+
+                    </DockPanel>
+                    <DockPanel Grid.Row="2" Margin="5,0,0,0" HorizontalAlignment="Stretch">
+                        <Button Name="SetStop_0ToPos225" Content="&#58012;" FontFamily="Segoe UI Symbol" Height="25" Width="25" Click="SetStop_0ToPos225_Click"/>
+                        <Label Content="Stop - " Margin="10,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <Label Name="Stop_0ToPos225" Content="--:--.--" VerticalContentAlignment="Center" Foreground="White"/>
+                    </DockPanel>
+                </Grid>
+            </Border>
+
+
+            <!-- +22.5 to -22.5 -->
+            <Border Grid.Row="2" Margin="0,10" BorderBrush="#FF3C3C3C" BorderThickness="2">
+                <Grid Background="#DD002855">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0">
+                        <Label DockPanel.Dock="Left" MinWidth="120" Content="+22.5° &#58039; -22.5°" FontFamily="Segoe UI Symbol" VerticalContentAlignment="Top" Foreground="White" FontSize="13" FontWeight="Bold" FontStyle="Italic"/>
+                        <Image Source="/Video Guide Images/Guide_Pos225ToNeg225.png" Margin="0,5"/>
+                    </DockPanel>
+
+                    <DockPanel Grid.Row="1" Margin="5,0,0,0" HorizontalAlignment="Stretch">
+                        <Button Name="SetStart_Pos225ToNeg225" Content="&#58012;" FontFamily="Segoe UI Symbol" Height="25" Width="25" Click="SetStart_Pos225ToNeg225_Click"/>
+                        <Label Content="Start - " Margin="10,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <Label Name="Start_Pos225ToNeg225" Content="--:--.--" VerticalContentAlignment="Center" Foreground="White"/>
+                    </DockPanel>
+                    
+                    <DockPanel Grid.Row="2" Margin="5,0,0,0" HorizontalAlignment="Stretch">
+                        <Button Name="SetStop_Pos225ToNeg225" Content="&#58012;" FontFamily="Segoe UI Symbol" Height="25" Width="25" Click="SetStop_Pos225ToNeg225_Click"/>
+                        <Label Content="Stop - " Margin="10,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <Label Name="Stop_Pos225ToNeg225" Content="--:--.--" VerticalContentAlignment="Center" Foreground="White"/>
+                    </DockPanel>
+                </Grid>
+            </Border>
+
+            <!-- -22.5 to 0 -->
+            <Border Grid.Row="3" Margin="0,10" BorderBrush="#FF3C3C3C" BorderThickness="2">
+                <Grid Background="#DD002855">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0">
+                        <Label DockPanel.Dock="Left" MinWidth="120" Content="-22.5° &#58039; 0°" FontFamily="Segoe UI Symbol" VerticalContentAlignment="Top" Foreground="White" FontSize="13" FontWeight="Bold" FontStyle="Italic"/>
+                        <Image Source="/Video Guide Images/Guide_Neg225To0.png" Margin="0,5"/>
+                    </DockPanel>
+
+                    <DockPanel Grid.Row="1" Margin="5,0,0,0" HorizontalAlignment="Stretch">
+                        <Button Name="SetStart_Neg225To0" Content="&#58012;" FontFamily="Segoe UI Symbol" Height="25" Width="25" Click="SetStart_Neg225To0_Click"/>
+                        <Label Content="Start - " Margin="10,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <Label Name="Start_Neg225To0" Content="--:--.--" VerticalContentAlignment="Center" Foreground="White"/>
+                    </DockPanel>
+                    <DockPanel Grid.Row="2" Margin="5,0,0,0" HorizontalAlignment="Stretch">
+                        <Button Name="SetStop_Neg225To0" Content="&#58012;" FontFamily="Segoe UI Symbol" Height="25" Width="25" Click="SetStop_Neg225To0_Click"/>
+                        <Label Content="Stop - " Margin="10,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                        <Label Name="Stop_Neg225To0" Content="--:--.--" VerticalContentAlignment="Center" Foreground="White"/>
+                    </DockPanel>
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,8">
+                <Button Name="CaptureStillsButton" Content="Capture" Margin="10,0" Padding="5,0" Height="30" Click="CaptureStillsButton_Click"/>
+                <Button Name="CloseVideoButton" Content="Close" Margin="10,0" Padding="5,0" Height="30" Click="CloseVideoButton_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Popup Name="busyPopup" PlacementTarget="{Binding ElementName=MainContainer}" Placement="Center">
+
+            <TextBlock Background="White" Padding="15" TextAlignment="Center">
+            Processing Video . . .
+            <LineBreak/>
+            <LineBreak/>
+            Please wait until finished
+            </TextBlock>
+        </Popup>
+    </Grid>
+</Window>
